@@ -1,0 +1,13 @@
+.check-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.check-icon {
+    font-weight: "800";
+    font-size: "22px";
+    padding: "5px";
+}
