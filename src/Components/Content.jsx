@@ -1,3 +1,4 @@
+import { ChakraProvider, Container } from '@chakra-ui/react'
 import React from 'react'
 import List from './List'
 import NoteAdd from './NoteAdd'
@@ -5,13 +6,22 @@ import Search from './Search'
 
 function Content() {
   return (
-    <>
-        <h1>Notes App</h1>
-        <Search/>
-        <NoteAdd/>
-        <List/>
-        
-    </>
+      <ChakraProvider>
+        <Container
+          maxWidth={1000}
+          mt={5}
+          rowGap={25}
+          shadow="md"
+          p={35}
+          my="auto"
+          justifyContent={"space-between"}
+          >
+
+          <Search />
+          <NoteAdd />
+          <List />
+        </Container>
+      </ChakraProvider>
   )
 }
 

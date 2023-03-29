@@ -1,56 +1,133 @@
-import { nanoid } from '@reduxjs/toolkit';
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setLocalStorage,changeActiveColor } from '../Redux/note/noteSlice';
-import { useSelector } from 'react-redux';
-import {GrCheckmark} from 'react-icons/gr'
-
+import { Box, Button, Textarea } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { addNote,changeActiveColor } from "../Redux/note/noteSlice";
+import { CheckIcon } from "@chakra-ui/icons";
 
 function NoteAdd() {
-    
+  const [note, setNote] = useState("");
+  const activeColor = useSelector((state) => state.notes.activeColor);
+  const notes = useSelector((state) => state.notes.notes);
+  const dispatch = useDispatch();
+  const toast = useToast();
 
-    const [note, setNote] = useState('');
-    const dispatch = useDispatch();
-    const selectorColor =useSelector((state)=>state.activeColor)
-  
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const id =nanoid();
-        const color = selectorColor
-        setNote('');
-        await dispatch(setLocalStorage({id,note,color}));
-
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    if (!note) {
+      toast({
+        title: "Error",
+        description: "Please enter a note.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
+    dispatch(addNote(note, activeColor));
+    setNote("");
+    toast({
+      title: "Note Added.",
+      description: "You added a note to your list successfully.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+    console.log(notes);
+  };
 
+  return (
+    <Box bg="white" p="3" rounded="xl" w="100%" boxShadow="lg">
+      <form onSubmit={handelSubmit}>
+        <Textarea
+          value={note}
+          fontWeight="300"
+          w="100%"
+          h="160px"
+          bg="white"
+          placeholder="Enter your note here"
+          resize="none"
+          border="0"
+          focusBorderColor="none"
+          spellCheck="false"
+          onChange={(e) => setNote(e.target.value)}
+          color= "black"
+        />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          px="16px"
+          py="12px"
+          fontSize="md"
+        >
+          <div>
+            <Button
+              colorScheme="whatsapp"
+              borderRadius="100%"
+              size="sm"
+              mr="1"
+              p="0"
+              onClick={() => dispatch(changeActiveColor("green"))}
+            >
+              {activeColor === "green" ? <CheckIcon /> : ""}
+            </Button>
+            <Button
+              onClick={() => dispatch(changeActiveColor("blue"))}
+              colorScheme="linkedin"
+              borderRadius="100%"
+              size="sm"
+              mr="1"
+              p="0"
+            >
+              {activeColor === "blue" ? <CheckIcon /> : ""}
+            </Button>
+            <Button
+              onClick={() => dispatch(changeActiveColor("yellow"))}
+              colorScheme="yellow"
+              color="white"
+              borderRadius="100%"
+              size="sm"
+              mr="1"
+              p="0"
+            >
+              {activeColor === "yellow" ? <CheckIcon /> : ""}
+            </Button>
+            <Button
+              onClick={() => dispatch(changeActiveColor("purple"))}
+              colorScheme="purple"
+              borderRadius="100%"
+              size="sm"
+              mr="1"
+              p="0"
+            >
+              {activeColor === "purple" ? <CheckIcon /> : ""}
+            </Button>
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='add note' value={note} onChange={(e) => setNote(e.target.value)}  />
-                <button type='submit'>Add</button>
-
-                <div className="color-selected">
-                    <button type='button' className='check-btn' style={{backgroundColor:"red" }}  onClick={() => dispatch(changeActiveColor("red"))}>
-                    {selectorColor==="red" ? <GrCheckmark className='check-icon'/>:''}
-                    </button>
-                    <button type='button' className='check-btn' style={{backgroundColor:"yellow" }} onClick={() => dispatch(changeActiveColor("yellow"))}>
-                    {selectorColor==="yellow" ? <GrCheckmark className='check-icon'/>:''}
-                    </button>
-                    <button type='button' className='check-btn' style={{backgroundColor:"green" }} onClick={() => dispatch(changeActiveColor("green"))}>
-                    {selectorColor==="green" ? <GrCheckmark className='check-icon'/>:''}
-                    </button>
-                    <button type='button' className='check-btn' style={{backgroundColor:"purple" }} onClick={() => dispatch(changeActiveColor("purple"))}>
-                    {selectorColor==="purple" ? <GrCheckmark className='check-icon'/>:''}
-                    </button>
-                    <button type='button' className='check-btn' style={{backgroundColor:"blue" }} onClick={() => dispatch(changeActiveColor("blue"))}>
-                    {selectorColor==="blue" ? <GrCheckmark className='check-icon'/>:''}
-                    </button>
-                 
-                </div>
-            </form>
-        </div>
-    )
+            <Button
+              colorScheme="red"
+              borderRadius="100%"
+              size="sm"
+              p="0"
+              onClick={() => dispatch(changeActiveColor("red"))}
+            >
+              {activeColor === "red" ? <CheckIcon /> : ""}
+            </Button>
+          </div>
+          <div>
+            <Button
+              colorScheme={activeColor === "white" ? "gray" : activeColor}
+              fontWeight="500"
+              color="black"
+              type="submit"
+            >
+              Add
+            </Button>
+          </div>
+        </Box>
+      </form>
+    </Box>
+  );
 }
 
-export default NoteAdd
+export default NoteAdd;
