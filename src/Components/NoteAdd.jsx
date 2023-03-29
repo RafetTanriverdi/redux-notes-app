@@ -1,7 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addNoteAsync,changeActiveColor } from '../Redux/note/noteSlice';
+import { setLocalStorage,changeActiveColor } from '../Redux/note/noteSlice';
 import { useSelector } from 'react-redux';
 import {GrCheckmark} from 'react-icons/gr'
 
@@ -11,7 +11,7 @@ function NoteAdd() {
 
     const [note, setNote] = useState('');
     const dispatch = useDispatch();
-    const selectorColor =useSelector((state)=>state.note.activeColor)
+    const selectorColor =useSelector((state)=>state.activeColor)
   
 
     const handleSubmit = async (e) => {
@@ -19,7 +19,7 @@ function NoteAdd() {
         const id =nanoid();
         const color = selectorColor
         setNote('');
-        await dispatch(addNoteAsync({id,note,color}));
+        await dispatch(setLocalStorage({id,note,color}));
 
     }
 
