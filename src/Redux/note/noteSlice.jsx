@@ -40,8 +40,9 @@ export const todoSlices = createSlice({
       state.currentNote = action.payload;
     },
     edit: (state, action) => {
+      state.currentNote = action.payload;
       state.notes.find((item) =>
-        item.id === state.currentNote.id ? (item.note = action.payload) : ""
+        item.id === state.currentNote.id ? (item.note === action.payload) : ""
       );
       setLocalStorage(state.notes);
     },

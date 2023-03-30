@@ -1,28 +1,27 @@
 import React, { useState } from "react";
-
 import { Box, Text } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { onClickNote } from "../Redux/note/noteSlice";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+
+import ModalComponent from "./ModalComponent";
 
 function List() {
   const [isOpen, setIsOpen] = useState(false);
   const notes = useSelector((state) => state.notes.notes);
   const filtered = useSelector((state) => state.notes.filtered);
   const dispatch = useDispatch();
-  const [editNote, seteditNote] = useState(notes.note)
+
+
 
   const filteredNotes = notes.filter((item) =>
     item.note.toLowerCase().includes(filtered.toLowerCase())
   );
-  const handelClick = (item) => {
+  const handleClick = (item) => {
     dispatch(onClickNote(item));
     setIsOpen(!isOpen);
   };
-  
-  const edit =()=>{
-    dispatch(edit(editNote))
-  }
+
   return (
     <div>
 
@@ -45,7 +44,7 @@ function List() {
             boxShadow="xl"
             overflow="hidden"
             textOverflow="ellipsis"
-            onClick={() => handelClick(item)}
+            onClick={() => handleClick(item)}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -62,18 +61,19 @@ function List() {
               {item.note}
             </Text>
 
-            <div style={{position:"absolute",bottom:"15px", right:"15px",left:"15px",display:"flex",justifyContent:"space-between" , cursor:"pointer"}}>
-              
-              <button onClick={()=>edit()}>
+            <div style={{ position: "absolute", bottom: "15px", right: "15px", left: "15px", display: "flex", justifyContent: "space-between", cursor: "pointer" }}>
 
-              <EditIcon />
+              <button onClick={handleClick} >
+                <EditIcon />
               </button>
-              <DeleteIcon />
+              <button>
+                <DeleteIcon />
+              </button>
             </div>
           </Box>
         ))}
       </Box>
-
+      {isOpen && <ModalComponent setIsOpen={setIsOpen} isOpen={isOpen} />}
     </div>
   );
 }
