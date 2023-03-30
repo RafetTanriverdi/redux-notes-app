@@ -15,6 +15,7 @@ function Content() {
           p={35}
           my="auto"
           justifyContent={"space-between"}
+          style={{backgroundColor:"#F1F1F2"}}
           >
 
           <Search />

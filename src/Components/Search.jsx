@@ -11,10 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { search } from '../Redux/note/noteSlice';
 
 function Search() {
-  const filtered = useSelector((state) => state.filtered);
+  const filtered = useSelector((state) => state.notes.filtered);
   const dispatch = useDispatch();
+  
   return (
-    <div>
+    <div style={{marginBottom:"10px"}}>
       <Box textAlign="center">
         <Text
           fontSize="6xl"
@@ -27,14 +28,17 @@ function Search() {
 
       </Box>
 
+    
       <Box zIndex="1" bg="white" rounded="xl">
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
-            children={<SearchIcon color="gray.300" />} 
-            />
-          <Input value={filtered} type="text"
-            placeholder='Note Search'
+            children={<SearchIcon color="gray.300" />}
+          />
+          <Input
+            value={filtered}
+            type="text"
+            placeholder="Note Search"
             border="0"
             focusBorderColor="none"
             fontWeight="300"
